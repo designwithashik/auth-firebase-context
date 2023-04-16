@@ -1,10 +1,11 @@
-import React, { useContext } from 'react';
+import React, { useContext, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { AuthContext } from '../providers/AuthPoviders';
+import { onAuthStateChanged } from 'firebase/auth';
 
 const Login = () => {
 
-  const {signIn} = useContext(AuthContext)
+  const {signIn, handleGoogleLogin} = useContext(AuthContext)
     const handleLogin = (event) => {
         event.preventDefault()
         const form = event.target
@@ -20,6 +21,14 @@ const Login = () => {
       })
       
   }
+
+  const googleLogin = () => {
+    handleGoogleLogin()
+      .then(result => {
+        const loggedUser = result.user;
+        console.log(loggedUser)
+    })
+ }
   
     return (
         <div className="hero h-[calc(100vh-64px)] bg-base-200">
@@ -46,8 +55,11 @@ const Login = () => {
           </label>
         </div>
         <div className="form-control mt-3">
-          <button className="btn btn-primary">Login</button>
-        </div>
+          <button type='submit' className="btn btn-primary">Login</button>
+              </div>
+              <div>
+                <button className='btn btn-primary' onClick={googleLogin}>Sign In With Google</button>
+              </div>
                     </form>
         <p className='px-3 pb-3'>New to <Link to='/register' className="label-text-alt link link-hover text-blue-700 text-sm"> Context Master?</Link></p>
          
